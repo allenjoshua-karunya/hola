@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title >Now turn backkk slowly 🦋</title>
+  <style>
+    /* ---------- page layout ---------- */
+    :root{
+      --bg-a: #fff5e4;
+      --bg-b: #ffe3e1;
+      --accent: #ff6b6b;
+    }
+    html,body{height:100%;margin:0;padding:0;}
+    body{
+      font-family: "Dancing Script", "Comic Sans MS", cursive;
+      background: linear-gradient(160deg,var(--bg-a),var(--bg-b));
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      color:var(--accent);
+    }
+
+    /* back-layer butterflies container (under text) */
+    .butterflies.back,
+    .butterflies.front{
+      position:absolute;
+      inset:0;
+      pointer-events:none; /* don't block clicks */
+    }
+    .butterflies.back{ z-index:1; }
+    .title { z-index:5; position:relative; text-align:center; padding:20px; }
+    .butterflies.front{ z-index:11; }
+
+   h1 {
+    font-size: clamp(28px, 6vw, 64px);
+    margin: 0;
+    text-shadow: 0 6px 18px rgba(255,107,107,0.12);
+    transform: translateZ(0) scale(0.8);
+    opacity: 0;
+    animation: revealTitle 8s ease forwards;
+  }
+
+  @keyframes revealTitle {
+    0% {
+     opacity: 0;
+      transform: scale(0.8) translateY(40px);
+    }
+    20% {
+     opacity: 0.6;
+     transform: scale(1.05) translateY(10px);
+    } 
+    30% {
+      opacity: 1;
+      transform: scale(0.97) translateY(0px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0px);
+    }
+  } 
+
+    /* ---------- butterfly base & parts ---------- */
+    .butterfly{
+      position:absolute;
+      width:60px; height:50px;
+      transform-origin:center center;
+      will-change: transform, opacity;
+      display:block;
+      pointer-events:none;
+    }
+
+    /* wing common */
+    .butterfly .wing{
+      position:absolute;
+      width:36px; height:44px;
+      top:2px;
+      background: linear-gradient(135deg,#ffd3e0,#ff9fb8);
+      border-radius: 60% 40% 40% 60%;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      transform-origin: 80% 50%;
+    }
+    .butterfly .wing.right{
+      right:2px;
+      transform-origin: 20% 50%;
+      border-radius: 40% 60% 60% 40%;
+      background: linear-gradient(135deg,#ffb6d0,#ff7aa6);
+    }
+    .butterfly .wing.left{
+      left:2px;
+      transform-origin: 80% 50%;
+      background: linear-gradient(135deg,#ff9fb8,#ff6b9a);
+    }
+
+    /* the body */
+    .butterfly .body{
+      position:absolute;
+      left:50%;
+      top:8px;
+      transform: translateX(-50%);
+      width:6px;
+      height:28px;
+      background:#8b3a4a;
+      border-radius:4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* wing flap animation uses CSS variables for different speeds */
+    @keyframes wingFlap {
+      0%   { transform: rotate(var(--wstart)); }
+      50%  { transform: rotate(var(--wend)); }
+      100% { transform: rotate(var(--wstart)); }
+    }
+
+    /* flight path: uses CSS vars set by JS (--dx, --dy, --rot, --scale) */
+    @keyframes flyPath {
+      0% {
+        transform: translate3d(0,0,0) rotate(0deg) scale(var(--scale,1));
+        opacity:1;
+        filter: drop-shadow(0 6px 12px rgba(255,107,107,0.08));
+      }
+      30% {
+        opacity:1;
+      }
+      100% {
+        transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--rot)) scale(var(--scale,1));
+        opacity:0;
+        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.06));
+      }
+    }
+
+    /* subtle variety in look — some will set --hue via JS to change wing colors */
+    .butterfly .wing{ transition: background 0.3s linear; }
+
+    /* small responsive tweaks */
+    @media (max-width:420px){
+      .butterfly{ width:44px; height:36px; }
+      .butterfly .wing{ width:28px; height:32px; }
+      h1{ font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- BACK layer (butterflies under the text) -->
+  <div class="butterflies back" aria-hidden="true"></div>
+
+  <div class="title">
+    <h1>Now turn backkk slowly 🦋</h1>
+  </div>
+
+  <!-- FRONT layer (butterflies over the text) -->
+  <div class="butterflies front" aria-hidden="true"></div>
+
+  <script>
+    /***** SETTINGS (tweak these) *****/
+    const SPAWN_INTERVAL_MIN = 150;   // ms (minimum delay between spawns)
+    const SPAWN_INTERVAL_MAX = 600;   // ms (maximum delay between spawns)
+    const MAX_CONCURRENT = 40;        // max butterflies at once
+    const LIFE_MIN = 4000;            // min flight duration in ms
+    const LIFE_MAX = 14000;           // max flight duration in ms
+
+    /* references to layers */
+    const backLayer = document.querySelector('.butterflies.back');
+    const frontLayer = document.querySelector('.butterflies.front');
+
+    let currentCount = 0;
+    let spawnTimer = null;
+
+    /* helper random functions */
+    const rnd = (a,b) => a + Math.random()*(b-a);
+    const rndInt = (a,b) => Math.floor(rnd(a,b+1));
+
+    function makeButterfly(layer) {
+      if (currentCount >= MAX_CONCURRENT) return;
+
+      const b = document.createElement('div');
+      b.className = 'butterfly';
+
+      // create inner parts
+      b.innerHTML = '<div class="wing left"></div><div class="wing right"></div><div class="body"></div>';
+
+      // start position: anywhere inside viewport
+      const startX_vw = rnd(0, 100); // vw
+      const startY_vh = rnd(0, 100); // vh
+      b.style.left = startX_vw + 'vw';
+      b.style.top = startY_vh + 'vh';
+
+      // random translation delta: how far it will move (in vw/vh)
+      const dx_vw = rnd(-60, 60); // move horizontally by -60..+60 vw
+      const dy_vh = rnd(-60, 60); // move vertically by -60..+60 vh
+      b.style.setProperty('--dx', dx_vw + 'vw');
+      b.style.setProperty('--dy', dy_vh + 'vh');
+
+      // random rotation for the whole element during flight
+      const rot = rnd(-720, 720) + 'deg';
+      b.style.setProperty('--rot', rot);
+
+      // random scale so butterflies vary
+      const scale = rnd(0.6, 1.4).toFixed(2);
+      b.style.setProperty('--scale', scale);
+
+      // flap speed (smaller = faster)
+      const flap = (rnd(0.10, 0.45)).toFixed(2) + 's';
+      b.style.setProperty('--flap', flap);
+
+      // wing start/end angles (left and right use CSS var defaults via classes)
+      // We'll set per-wing start/end via style attributes using CSS variables on the element:
+      const leftStart = rnd(-10, -35).toFixed(0) + 'deg';
+      const leftEnd   = (parseInt(leftStart) - rnd(20, 60)).toFixed(0) + 'deg';
+      const rightStart = rnd(10, 35).toFixed(0) + 'deg';
+      const rightEnd   = (parseInt(rightStart) + rnd(20, 60)).toFixed(0) + 'deg';
+
+      // we will target the inner wing elements after DOM insertion to set their custom variables
+      // flight duration
+      const dur = rnd(LIFE_MIN, LIFE_MAX) / 1000; // seconds
+      b.style.animation = `flyPath ${dur}s linear forwards`;
+      // add a tiny random animation-delay to spread movement
+      b.style.animationDelay = (rnd(0, 1)) + 's';
+
+      // set wing animations via CSS on children
+      // small color variance so it looks handmade
+      const hue = rndInt(330, 355); // pinkish hues
+      const wingLeft = b.querySelector('.wing.left');
+      const wingRight = b.querySelector('.wing.right');
+
+      wingLeft.style.setProperty('--wstart', leftStart);
+      wingLeft.style.setProperty('--wend', leftEnd);
+      wingLeft.style.animation = `wingFlap var(--flap) ease-in-out infinite`;
+
+      wingRight.style.setProperty('--wstart', rightStart);
+      wingRight.style.setProperty('--wend', rightEnd);
+      wingRight.style.animation = `wingFlap var(--flap) ease-in-out infinite`;
+
+      // color variations via HSL for playful palette
+      const colorA = `hsl(${hue}deg 90% 85%)`;
+      const colorB = `hsl(${Math.max(hue-15,300)}deg 85% 65%)`;
+      wingLeft.style.background = `linear-gradient(135deg, ${colorA}, ${colorB})`;
+      wingRight.style.background = `linear-gradient(135deg, ${colorB}, ${colorA})`;
+
+      // add a little random rotation offset initially (so wings not identical)
+      const initRot = rnd(-30,30).toFixed(0) + 'deg';
+      b.style.transform = `rotate(${initRot})`;
+
+      // put on chosen layer
+      layer.appendChild(b);
+      currentCount++;
+
+      // remove when flight animation ends
+      const removeFn = () => {
+        b.removeEventListener('animationend', removeFn);
+        if (b.parentNode) b.parentNode.removeChild(b);
+        currentCount = Math.max(0, currentCount - 1);
+      };
+      b.addEventListener('animationend', removeFn);
+
+      // safety removal in case animationend doesn't fire
+      setTimeout(() => {
+        if (b.parentNode) {
+          b.parentNode.removeChild(b);
+          currentCount = Math.max(0, currentCount - 1);
+        }
+      }, (dur * 1000) + 5000);
+    }
+
+    // spawn logic: spawn occasionally, picking random layer (front/back)
+    function startSpawning(){
+      (function loop(){
+        // pick a random layer so some butterflies are behind text and some in front
+        const layer = Math.random() < 0.45 ? backLayer : frontLayer;
+        makeButterfly(layer);
+
+        const next = rnd(SPAWN_INTERVAL_MIN, SPAWN_INTERVAL_MAX);
+        spawnTimer = setTimeout(loop, next);
+      })();
+    }
+
+    // start
+    startSpawning();
+
+    // optional: stop spawning after some time (comment out if you want infinite)
+    // setTimeout(()=> clearTimeout(spawnTimer), 60_000); // stop after 60s (example)
+  </script>
+</body>
+</html>

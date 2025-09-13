@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍒</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffe6f2, #e6f7ff);
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      color: #ff6699;
+      text-shadow: 2px 2px #fff;
+      animation: floatText 3s infinite ease-in-out;
+    }
+
+    @keyframes floatText {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Origami butterflies */
+    .butterfly {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: pink;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      animation: flutter 6s infinite linear;
+      opacity: 0.8;
+    }
+
+    @keyframes flutter {
+      0% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-50px) rotate(20deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(50px) rotate(-20deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .butterfly:nth-child(1) { left: 10%; top: 60%; animation-duration: 5s; background: #ff99cc; }
+    .butterfly:nth-child(2) { left: 40%; top: 20%; animation-duration: 7s; background: #99ccff; }
+    .butterfly:nth-child(3) { left: 70%; top: 70%; animation-duration: 8s; background: #ffcc99; }
+    .butterfly:nth-child(4) { left: 85%; top: 30%; animation-duration: 6s; background: #ccffcc; }
+
+    /* Origami button */
+    .origami-btn {
+      position: absolute;
+      bottom: 15%;
+      padding: 15px 40px;
+      background: #fff;
+      color: #ff6699;
+      border: 3px solid #ff6699;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transform: perspective(500px) rotateX(10deg);
+      transition: all 0.3s ease;
+      box-shadow: 0px 5px 0px #ff99bb;
+    }
+
+    .origami-btn:hover {
+      transform: perspective(500px) rotateX(0deg) scale(1.1);
+      background: #ff6699;
+      color: #fff;
+      box-shadow: 0px 8px 0px #cc3366;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hiii Cherry 🍒,<br> uhm I made this for you.</h1>
+
+  <!-- Floating butterflies -->
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+
+  <!-- Origami "enter" button -->
+  <button class="origami-btn" onclick="location.href='journey.html'">
+    click here 😀
+  </button>
+</body>
+</html>

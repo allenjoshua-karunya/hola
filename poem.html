@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Poem for You ✨</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fff0f5, #f0fff0);
+      font-family: 'Indie Flower', cursive, sans-serif;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      color: #444;
+    }
+    h1 {
+      margin-bottom: 30px;
+      color: #ff6699;
+    }
+    .poem {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      border: 3px solid #ff99bb;
+      box-shadow: 0 6px 0 #ff6699;
+      font-size: 1.4rem;
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.8;
+    }
+    .line {
+      opacity: 0;
+      transform: rotateX(90deg);
+      animation: unfold 1s forwards;
+    }
+    @keyframes unfold {
+      to { opacity: 1; transform: rotateX(0); }
+    }
+    .nav-btn {
+      margin-top: 40px;
+      padding: 12px 30px;
+      border: 2px solid #ff6699;
+      background: white;
+      color: #ff6699;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #ff99bb;
+    }
+    .nav-btn:hover {
+      background: #ff6699;
+      color: white;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>💌 Anddd 💌</h1>
+  <div class="poem">
+    <div class="line" style="animation-delay:0s">can you believe it’s been a whole year?,</div>
+    <div class="line" style="animation-delay:2s">Somehow we survived all the distance, constant fights,</div>
+    <div class="line" style="animation-delay:4s">the sleepy texts where I slept,</div>
+    <div class="line" style="animation-delay:6s">and all the random food/series debates that got way too serious.</div>
+    <div class="line" style="animation-delay:8s">everyyy crease a memory we create!</div>
+    <div class="line" style="animation-delay:10s">Ik we fight 24/7 but ure my everythingggg</div>
+    <div class="line" style="animation-delay:12s">I would trade the entire world for you 😚.</div>
+  </div>
+
+  <button class="nav-btn" onclick="location.href='final.html'">Next ➡️</button>
+</body>
+</html>

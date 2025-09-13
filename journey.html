@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Na idha solli eh aaganum 😶</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fff5f7, #e6faff);
+      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
+      padding: 30px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #ff6699;
+      margin-bottom: 40px;
+      animation: float 3s infinite ease-in-out;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .event {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 0 #ffb3d9;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+    .event:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    .details {
+      display: none;
+      margin-top: 10px;
+      font-style: italic;
+      color: #555;
+    }
+    .event.open .details {
+      display: block;
+      animation: unfold 0.6s ease;
+    }
+    @keyframes unfold {
+      from { transform: scaleY(0); opacity: 0; }
+      to { transform: scaleY(1); opacity: 1; }
+    }
+    .nav-btn {
+      display: block;
+      margin: 40px auto 0;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border: 2px solid #ff6699;
+      background: white;
+      color: #ff6699;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 4px 0 #ff99bb;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: #ff6699;
+      color: white;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <h1> My memory might be fucked but hey listen... </h1>
+  <div class="timeline">
+    <div class="event">
+      <span class="icon">🦋</span> The day we first met.
+      <div class="details"> Didn’t know I’d end up stuck with a smol angwy potato forever 🥔.</div>
+    </div>
+    <div class="event">
+      <span class="icon">🤭</span> Connection?
+      <div class="details"> Felt smth when u used to constantly update every sec of life to me back in 11th.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😝</span> Spark epo?
+      <div class="details"> Dengue, bitter-sweet cus hey, tho u were sick, we got close.</div>
+    </div>
+    <div class="event">
+      <span class="icon">🤔</span> Heat? Love?
+      <div class="details"> Idk what that was but 11th hmmm. Eng hr, pinky fingers, thighs, waist. Ange close, dead me. </div>
+    </div>
+    <div class="event">
+      <span class="icon">😺</span> Longing.
+      <div class="details"> Yes, omg, wanting to speak 2 u, look in ur eyes, n dying to hug u atleast oru time, i knew it wasnt just a phase.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😚</span> 👀
+      <div class="details"> Realization ig, i thought to myself maybe i was in love, but scared cus what if u arent. also what if it doesnt workout?. 
+        And yeah as much as i hate to admit it, i wan an asshole.</div>
+    </div>
+    <div class="event">
+      <span class="icon">✔️</span> Pochu
+      <div class="details"> Next day meet planned, clean panne, phone koduthe v2la, mudinchu. Scariest days 😬, sleepless for 5 days, thought we were in the wrong.
+        neraya ran thru, contacted un amma, did smth stupid, felt like the most sensible thing to do back then.</div>
+    </div>
+    <div class="event">
+      <span class="icon">🙏</span> 12th...😶
+      <div class="details"> I'd better shut up cus, i can think now, i was an asshole, scared too, and mad.
+        okay no indha detail lam pesna ne vitu poiruve so skip skip. yeah i hated how u got close w a certain someone.</div>
+    </div>
+    <div class="event">
+      <span class="icon">❓❓❓</span> After boards!
+      <div class="details"> God knows how but damn, neriya clear achu, sudden spark. boom! angry crying confession. AUG 08!
+        undoubtedly best day ever.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😶</span> Most intense memory?
+      <div class="details"> Snuck into ur house apo, the heat, the smell, the position, Perfect. I can still smell u.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😬</span> Ugly again
+      <div class="details"> Sorry again, evlo solnum thrle, thanks too, for taking me back. and damn u came to hangout even when were broken up.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😭</span> Happiest memory?
+      <div class="details"> Shopping like we're married already at Lulu.</div>
+    </div>
+    <div class="event">
+      <span class="icon">😀</span> Bomb
+      <div class="details"> Cairo, KL every option u said apo. But alright i was ready! cus we're meant to be.
+        Couldve kept that ring w urself only tho. thooki veeeesite.</div>
+    </div>
+    <div class="event">
+      <span class="icon">👍</span> skipping another break up
+      <div class="details"> next next po! also skipping the part where YOU broke up w me. revenge huh?.</div>
+    </div>
+    <div class="event">
+      <span class="icon">❤️</span> uhhhh
+      <div class="details"> THANKS for making my life as beautiful as you.
+        BTW this meeting! damn, I cant express in words how excited i am.
+        but wait, click next!!!.</div>
+    </div>    
+    
+  </div>
+
+  <button class="nav-btn" onclick="location.href='letter.html'">Next ➡️</button>
+
+  <script>
+    document.querySelectorAll('.event').forEach(event => {
+      event.addEventListener('click', () => {
+        event.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
